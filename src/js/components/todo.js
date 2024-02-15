@@ -6,6 +6,7 @@ export default class Todo {
     this.list = document.querySelector('.todo__list');
     this.filters = document.querySelectorAll('.todo__filter-input');
     this.storage = this.restoreFromLocalStorage();
+    this.currList = 'all';
   }
 
   // Инициализация
@@ -31,8 +32,8 @@ export default class Todo {
       task.state = 'active';
       task.id = this.storage.length > 0 ? this.storage[this.storage.length - 1].id + 1 : 0;
 
-      // добавление задачи в список
-      this.addTaskToDOM(task);
+      // добавление задачи в DOM если не выведен список Выполненных задач
+      if (this.currList !== 'done') this.addTaskToDOM(task);
       // добавление задачи в local storage
       this.addTaskToLocalStorrage(task);
       // очистка формы новой задачи
@@ -49,7 +50,11 @@ export default class Todo {
         // если все задачи, то вывести все задачи в DOM
         if (filter.value === 'all') {
           this.fillList(this.storage);
+          // изменение переменной для текущего списка
+          this.currList = 'all';
         } else {
+          // изменение переменной для текущего списка
+          this.currList = filter.value;
           // если фильт, то составляется новый массив согласно фильтру, затем вывод задачи в DOM
           const newList = this.storage.filter(task => task.state === filter.value);
           this.fillList(newList);
