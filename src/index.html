@@ -12,9 +12,23 @@
       <div class="todo__wrapper">
         <form class="todo__form tl3">
           <input required type="text" class="todo__input-title" placeholder="Задача" name="taskTitle">
-          <input type="text" class="todo__input-desc" placeholder="Описание задачи" name="taskDesc">
+          <textarea class="todo__input-desc" placeholder="Описание задачи" name="taskDesc"></textarea>
           <button class="btn todo__input-btn">Добавить</button>
         </form>
+        <div class="todo__filter-list tl3">
+          <div>
+            <input type="radio" class="todo__filter-input" id="todoAll" name="todoType" value="all" checked>
+            <label for="todoAll" class="todo__filter-label">Все задачи</label>
+          </div>
+          <div>
+            <input type="radio" class="todo__filter-input" id="todoActive" name="todoType" value="active">
+            <label for="todoActive" class="todo__filter-label">Активные</label>
+          </div>
+          <div>
+            <input type="radio" class="todo__filter-input" id="todoDone" name="todoType" value="done">
+            <label for="todoDone" class="todo__filter-label">Выполненные</label>
+          </div>
+        </div>
         <div class="todo__list">
         </div>
       </div>
