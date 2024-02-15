@@ -28,39 +28,6 @@ const pages = HTML_FILES.map((page) => {
     });
 });
 
-const videoSourcePath = path.resolve(__dirname, './', 'src/assets/', 'video');
-const videoDestPath = path.resolve(__dirname, './', 'dist/assets/', 'video');
-
-// Проверяем существование директории
-if (fs.existsSync(videoSourcePath)) {
-    console.log(`Copying videos from ${videoSourcePath} to ${videoDestPath}`);
-
-    // Создаем объект CopyPlugin только если директория существует
-    const copyPlugin = new CopyPlugin({
-        patterns: [
-            {
-                from: videoSourcePath,
-                to: videoDestPath
-            }
-        ]
-    });
-
-    // Инициализируем массив plugins, если он не определен
-    if (!module.exports.plugins) {
-        console.log('nety plugins');
-        module.exports.plugins = [];
-    }
-    console.log(module.exports.plugins);
-
-    // Добавляем созданный объект CopyPlugin в массив плагинов
-    module.exports.plugins.push(copyPlugin);
-} else {
-    console.warn(`Warning: Directory ${videoSourcePath} does not exist. Videos will not be copied.`);
-}
-//рабочий
-// const INCLUDE_PATTERN =
-//   /<include\s+src=["'](\.\/)?([^"']+)["']\s+data-text='([^']+)'\s*><\/include>/g;
-
 const INCLUDE_PATTERN = /<include\s+src=["'](\.\/)?([^"']+)["'](?:\s+data-text='([^']+)')?\s*><\/include>/g;
 
 // Пример использования регулярного выражения
@@ -131,13 +98,6 @@ const entryPoints = HTML_FILES.reduce((entries, page) => {
     return entries;
 }, {});
 
-function reviveJsonKeys(key, value) {
-    if (typeof value === 'string' && value.startsWith('HTML:')) {
-        return value.substring(5); // убираем префикс "HTML:"
-    }
-    return value;
-}
-
 function processHtmlLoader(content, loaderContext) {
     let newContent = processNestedHtml(content, loaderContext);
     newContent = newContent.replace(/(src|data-src)="(.*?)\.(jpg|png)"/gi, (match, p1, p2, p3) => {
@@ -174,7 +134,7 @@ module.exports = {
     },
 
     plugins: [
-        new FaviconsWebpackPlugin('./src/assets/favicon.ico'),
+        new FaviconsWebpackPlugin('./src/assets/images/favicon.svg'),
         new CleanWebpackPlugin(),
 
         ...pages,
@@ -209,35 +169,18 @@ module.exports = {
             silent: false,
             strict: true
         }),
-        fs.existsSync(videoSourcePath)
-            ? new CopyPlugin({
-                  patterns: [
-                      {
-                          from: path.resolve(__dirname, './', 'src/assets/', 'images'),
-                          to: path.resolve(__dirname, './', 'dist/assets/', 'images')
-                      },
-                      {
-                          from: path.resolve(__dirname, './', 'src/assets/', 'fonts'),
-                          to: path.resolve(__dirname, './', 'dist/assets/', 'fonts')
-                      },
-                      {
-                          from: videoSourcePath,
-                          to: videoDestPath
-                      }
-                  ]
-              })
-            : new CopyPlugin({
-                  patterns: [
-                      {
-                          from: path.resolve(__dirname, './', 'src/assets/', 'images'),
-                          to: path.resolve(__dirname, './', 'dist/assets/', 'images')
-                      },
-                      {
-                          from: path.resolve(__dirname, './', 'src/assets/', 'fonts'),
-                          to: path.resolve(__dirname, './', 'dist/assets/', 'fonts')
-                      }
-                  ]
-              })
+        new CopyPlugin({
+          patterns: [
+              {
+                  from: path.resolve(__dirname, './', 'src/assets/', 'images'),
+                  to: path.resolve(__dirname, './', 'dist/assets/', 'images')
+              },
+              {
+                  from: path.resolve(__dirname, './', 'src/assets/', 'fonts'),
+                  to: path.resolve(__dirname, './', 'dist/assets/', 'fonts')
+              }
+          ]
+      })
     ],
 
     module: {
@@ -299,18 +242,6 @@ module.exports = {
                     }
                 }
             },
-            //video
-            {
-                test: /\.(mov|mp4)$/,
-                use: [
-                    {
-                        loader: 'file-loader'
-                    }
-                ],
-                generator: {
-                    filename: 'assets/videos/[name][ext]'
-                }
-            }
         ]
     }
 };
