@@ -172,14 +172,14 @@
       border-radius: 50%;
       border: solid 0.1rem $green;
       color: $green;
-      align-items: center;
       display: flex;
       justify-content: center;
-      line-height: 100%;
+      line-height: 3.5rem;
       @include small-tablet {
         width: 5rem;
         height: 5rem;
         font-size: 3.6rem;
+        line-height: 4.5rem;
       }
       &:hover {
         background-color: $green;
