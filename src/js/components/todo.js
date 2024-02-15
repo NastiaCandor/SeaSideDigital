@@ -39,6 +39,8 @@ export default class Todo {
       // очистка формы новой задачи
       this.form.reset();
     });
+    // подстраивать высоту textArea под текст
+    this.adjustTextarea();
   }
 
   // Функционал фильтрации списка задач
@@ -68,6 +70,16 @@ export default class Todo {
     this.storage.push(task);
     // update local storage
     this.updateLocalStorage();
+  }
+
+  // Постраивание высоты textarea под текст
+  adjustTextarea() {
+    const input = document.querySelector('.todo__input-desc');
+    input.addEventListener('keydown', function() {
+      if (this.scrollTop > 0) {
+        this.style.height = this.scrollHeight + 'px';
+      }
+    });
   }
 
   // Добавление новой задачи в список
