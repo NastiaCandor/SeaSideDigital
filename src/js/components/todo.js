@@ -50,13 +50,18 @@ export default class Todo {
     this.list.addEventListener('click', (e) => {
       const target = e.target;
 
+      // clicked task state
       if (target.classList.contains('todo__task-state')) {
-
-        const newState = target.checked ? 'done' : 'active';
         const task = target.closest('.todo__task');
+        const newState = target.checked ? 'done' : 'active';
+        // change task state
         task.setAttribute('data-task-state', newState);
+      }
 
-        
+      // clicked task remove button
+      if (target.classList.contains('todo__task-remove')) {
+        const task = target.closest('.todo__task');
+        task.remove();
       }
     });
   }
